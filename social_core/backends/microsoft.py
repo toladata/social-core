@@ -22,6 +22,17 @@ class MicrosoftOAuth2(BaseOAuth2):
     REDIRECT_STATE = False
     DEFAULT_SCOPE = ['User.Read']
 
+    def setting(self, name, default=None):
+        s = self.strategy.setting(name, default=default, backend=self)
+        return s
+
+    def get_redirect_uri(self, state=None):
+        if self.setting("REDIRECT_URL") != None:
+            print("Redirect to custom url")
+            return self.setting("REDIRECT_URL")
+        else:
+            return super(BaseOAuth2, self).get_redirect_uri(state=state)
+
     def auth_complete(self, *args, **kwargs):
         """Completes login process, must return user instance"""
         self.process_error(self.data)
