@@ -15,8 +15,10 @@ OAuth2 Backend to work with microsoft graph.
 class TolaOAuth2(BaseOAuth2):
     name = 'tola'
     SCOPE_SEPARATOR = ' '
-    AUTHORIZATION_URL = os.getenv('TOLA_ACTIVITY_API_URL')+'/oauth/authorize'
-    ACCESS_TOKEN_URL = os.getenv('TOLA_ACTIVITY_API_URL')+'/oauth/token/'
+    AUTHORIZATION_URL = (os.getenv('TOLA_ACTIVITY_API_URL', '') +
+                         '/oauth/authorize')
+    ACCESS_TOKEN_URL = (os.getenv('TOLA_ACTIVITY_API_URL', '') +
+                        '/oauth/token/')
 
     ACCESS_TOKEN_METHOD = 'POST'
     REDIRECT_STATE = False
@@ -48,7 +50,7 @@ class TolaOAuth2(BaseOAuth2):
     def user_data(self, access_token, *args, **kwargs):
         try:
             resp = self.get_json(
-                os.getenv('TOLA_ACTIVITY_API_URL')+'/oauthuser',
+                os.getenv('TOLA_ACTIVITY_API_URL', '') + '/oauthuser',
                 headers={
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Accept': 'application/json',
